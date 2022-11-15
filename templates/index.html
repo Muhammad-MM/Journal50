@@ -1,0 +1,199 @@
+{% extends "layout.html" %}
+{% block title %}Journal50 - Home{% endblock %}
+{% block script %}
+<script src="/static/filesaver.js" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/rollups/aes.js" integrity="sha256-/H4YS+7aYb9kJ5OKhFYPUjSJdrtV6AeyJOtTkw6X72o=" crossorigin="anonymous"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function(){
+        var journal_data;
+        var key;
+        object = document.getElementById("impjournal");
+        // Handle the import journal button
+        function importf() {
+            var file = (document.getElementById("upljournal")).files[0];
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                key = prompt("Enter your encryption key!", "");
+                if (key != null) {
+                    try {
+                        journal_data = CryptoJS.AES.decrypt((e.target.result), key).toString(CryptoJS.enc.Utf8);
+                        journal_data = JSON.parse(journal_data);
+                        console.log("Decrypted successfully!");
+                    }
+                    catch(err) {
+                        alert("Wrong key!");
+                    } 
+                }
+            };
+            reader.readAsText(file);
+        }
+        object.addEventListener("click", importf);
+        // Handle the submit button
+        object = document.getElementById("submityep");
+        function submitf() {
+            var title = document.getElementById("title").value;
+            var time = document.getElementById("time").value;
+            var content = document.getElementById("content").value;
+            var date = document.getElementById("date").value;
+            var found = false;
+            if (journal_data.length == 0) {
+                journal_data.push({"title": title, "time": time, "content": content, "date": date});
+            } else {
+                for (var i = 0; i < journal_data.length; i++) {
+                    if (journal_data[i].date == date && journal_data[i].time == time && journal_data[i].title == title) { 
+                        journal_data[i].content = content;
+                        console.log("This entry already exists, replacing it!");
+                        found = true;
+                        break;
+                    }
+                }
+                if (found == false) {
+                    console.log("This entry does not exist, adding it!");
+                    journal_data.push({"title": title, "time": time, "content": content, "date": date});
+                }
+                console.log(journal_data);
+            }
+        }
+        object.addEventListener("click", submitf);
+        // Handle the export button
+        object = document.getElementById("expjournal");
+        function exportf() {
+            if (journal_data != null && key != null) {
+                var data = JSON.stringify(journal_data);
+                var encrypted = CryptoJS.AES.encrypt(data, key);
+                console.log(encrypted);
+                var blob = new Blob([encrypted], {type: "text/plain;charset=utf-8"});
+                saveAs(blob, "journal.j50");
+            }
+            else {
+                alert("You need to import a journal first!");
+            }
+        }
+        object.addEventListener("click", exportf);
+        // Handle the new button
+        object = document.getElementById("newjournal");
+        function newf() {
+            journal_data = [];
+            key = prompt("Please input a password!", "");
+            if (key != null) {
+                console.log("valid!");
+            }
+        }
+        // Handle the list entries button
+        object.addEventListener("click",newf)
+        object = document.getElementById("listentries");
+        function listf() {
+            if (journal_data != null) {
+                var table = document.getElementById("journaltable");
+                for (var i = table.rows.length - 1; i > 0; i--) {
+                    table.deleteRow(i);
+                }
+                for (i=0; i < (journal_data.length); i++ ) {
+                    var title = journal_data[i]["title"];
+                    var date = journal_data[i]["date"];
+                    var time = journal_data[i]["time"];
+                    var row = table.insertRow(1);
+                    var cell1 = row.insertCell(0);
+                    var cell2 = row.insertCell(1);
+                    var cell3 = row.insertCell(2);
+                    cell1.innerHTML = title;
+                    cell2.innerHTML = date;
+                    cell3.innerHTML = time;
+                    row.addEventListener("click", function(){
+                        var rownum = this.rowIndex;
+                        var title = document.getElementById("journaltable").rows[rownum].cells[0].innerHTML;
+                        var date = document.getElementById("journaltable").rows[rownum].cells[1].innerHTML;
+                        var time = document.getElementById("journaltable").rows[rownum].cells[2].innerHTML;
+                        var content = "";
+                        for (i=0; i < (journal_data.length); i++ ) {
+                            if (journal_data[i]["title"] == title && journal_data[i]["date"] == date && journal_data[i]["time"] == time) {
+                                content = journal_data[i]["content"];
+                                break;
+                            }
+                        }
+                        document.getElementById("title").value = title;
+                        document.getElementById("time").value = time;
+                        document.getElementById("content").value = content;
+                        document.getElementById("date").value = date;
+                    });
+                }
+            }
+        }
+        object.addEventListener("click", listf);
+    });
+</script>
+{% endblock %}
+{% block body %}
+    <body>
+        <div class="container-fluid">
+            <div class="alert alert-primary" role="alert">
+                Created by Muhammad Masoom - CS50 Final Project - Welcome to Journal50
+            </div>
+            <ul class="m-3 nav">
+                <li class="nav-item">
+                    <a class="btn btn-primary" href="https://github.com/Muhammad-MM/Journal50" role="button">Github</a>
+                </li>
+            </ul>
+            <div class="text-center">
+                <input type="file" id="upljournal" accept=".j50">
+                <button class="btn btn-light" id="impjournal" type="submit">Import Journal</button>
+                <button class="btn btn-light" id="newjournal" type="submit">New Journal</button>
+                <button class="btn btn-light" id="expjournal" type="submit">Export Journal</button>
+            </div>
+            <div class="row justify-content-center">  
+                <div class="col-6">
+                    <div class="row">
+                        <div class="col-6">
+                            <input required type="date" id="date" class="form-control" placeholder="Date">
+                        </div>
+                        <div class="col-6">
+                            <input required type="time" id="time" class="form-control" placeholder="Time">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-6">
+                    <div class="row">
+                        <div class="col-6">
+                            <input required type="text" id="title" class="form-control" placeholder="Title">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-6">
+                    <textarea class="form-control" id="content" rows="10" placeholder="Content"></textarea>
+                </div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-6">
+                    <button class="btn btn-light" id="submityep" type="submit">Submit</button>
+                </div>
+            </div>
+        </div>
+        <div class="container-fluid">
+            <div class="row justify-content-center">
+                <div class="col-6">
+                    <table class="table" id="journaltable">
+                        <tbody>
+                            <tr>
+                                <th scope="row">Title</th>
+                                <td>Date</td>
+                                <td>Time</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-6">
+                    <button class="btn btn-light" id="listentries" type="submit">List Entries</button>
+                </div>
+            </div>
+        </div>
+    
+
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
+    </body>
+{% endblock %}
