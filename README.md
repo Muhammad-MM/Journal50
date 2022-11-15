@@ -7,6 +7,29 @@ Journal50 is a secure privacy-focused journaling application.
 
 Your journal is stored locally on your computer and is never sent to any server, secured with a private key you provide.
 
+Users are able to keep track of their thoughts and experiences in a safe and private space, knowing that their data is secure.
+
+## Features
+
+* Import button:
+  * Users are able to import their .j50 journal (secured with AES encryption)
+* New Journal button:
+  * Users are able to create a new journal, initially a key inputted by the user is required to sign up
+* Export Journal:
+  * Data is encrypted with the same key used to decrypt before being downloaded back to the client
+* Date selector:
+  * Select date, month and year in the following format dd/mm/yyyy --> a calender is also implemented
+* Time selector:
+  * Select time in the format --:--
+* Title & content inputs:
+  * Self explanatory
+* Submit button:
+  * Submits the entry into the journal
+* List button:
+  * Lists all the entries in the journal
+  * Users are also able to click on an entry to edit it --> if the content is different the entry is updated
+
+ 
 ## The Tech
 - Python
 - HTML
@@ -47,6 +70,20 @@ By default, flask opens the website on PORT 5000.
 Contributions are always welcome!
 
 Open a pull request to get started
+
+## Scrapped Features
+
+Originally, I was planning to implement a login and register page, handling the DB with SQL
+
+The implementation of tags --> I never got around to this as I thought it was unnecessary
+
+A search function --> Allows you to filter journal entries (e.g by title, date, time etc.)
+
+Forced secure keys --> Forcing validation checks on the users to create a more secure key --> I figured this would be annoying to the user
+
+Fun Fact:
+
+My original final project was planned to be a metasearch engine, a secure version of Google. Users would have to host their own proxy servers, in which my site would tunnel through them --> I figured this would be a hassle and that there are other great metasearch engines out there which do the same thing e.g SEARXNG
 
 
 ## Authors
