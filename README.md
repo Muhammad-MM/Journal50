@@ -71,21 +71,6 @@ Contributions are always welcome!
 
 Open a pull request to get started
 
-## Scrapped Features
-
-Originally, I was planning to implement a login and register page, handling the DB with SQL
-
-The implementation of tags --> I never got around to this as I thought it was unnecessary
-
-A search function --> Allows you to filter journal entries (e.g by title, date, time etc.)
-
-Forced secure keys --> Forcing validation checks on the users to create a more secure key --> I figured this would be annoying to the user
-
-Fun Fact:
-
-My original final project was planned to be a metasearch engine, a secure version of Google. Users would have to host their own proxy servers, in which my site would tunnel through them --> I figured this would be a hassle and that there are other great metasearch engines out there which do the same thing e.g SEARXNG
-
-
 ## Authors
 
 99% of the code for this site was created by me (excluding libraries I used)
