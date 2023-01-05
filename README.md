@@ -3,7 +3,7 @@
 
 What is Notes50?
 
-Journal50 is a secure privacy-focused journaling application.
+Notes50 is a secure privacy-focused journaling application.
 
 Your notebook is stored locally on your computer and is never sent to any server, secured with a private key you provide.
 
