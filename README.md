@@ -1,20 +1,20 @@
 
-# Journal50
+# Notes50
 
-What is Journal50?
+What is Notes50?
 
 Journal50 is a secure privacy-focused journaling application.
 
-Your journal is stored locally on your computer and is never sent to any server, secured with a private key you provide.
+Your notebook is stored locally on your computer and is never sent to any server, secured with a private key you provide.
 
 Users are able to keep track of their thoughts and experiences in a safe and private space, knowing that their data is secure.
 
 ## Features
 
 * Import button:
-  * Users are able to import their .j50 journal (secured with AES encryption)
+  * Users are able to import their .j50 notebook (secured with AES encryption)
 * New Journal button:
-  * Users are able to create a new journal, initially a key inputted by the user is required to sign up
+  * Users are able to create a new notebook, initially a key inputted by the user is required to sign up
 * Export Journal:
   * Data is encrypted with the same key used to decrypt before being downloaded back to the client
 * Date selector:
